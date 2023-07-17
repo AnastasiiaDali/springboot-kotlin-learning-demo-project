@@ -9,14 +9,6 @@ import org.springframework.web.bind.annotation.RestController
 @SpringBootApplication
 class LearningKtSpringbApplication
 
-@RestController
-@RequestMapping("api/hello")
-class HelloWorldController {
-	@GetMapping
-	fun helloWorld():String {
-		return "Hello World"
-	}
-}
 fun main(args: Array<String>) {
 	runApplication<LearningKtSpringbApplication>(*args)
 }
