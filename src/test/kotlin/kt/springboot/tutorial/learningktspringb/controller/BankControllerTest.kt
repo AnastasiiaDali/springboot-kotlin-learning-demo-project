@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 
 @SpringBootTest
@@ -121,4 +122,53 @@ internal class BankControllerTest @Autowired constructor (
                     }
                     }
         }
+
+    @Nested
+    @DisplayName("PATH api/banks")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class PatchExistingBank {
+        @Test
+        fun `should update existing bank`() {
+            // given
+            val updatedBank = Bank("1234", 3.90, 3)
+
+            // when
+            val performPatch = mockMvc.patch(baseUrl) {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(updatedBank)
+            }
+
+            // then
+            performPatch
+                    .andDo { print() }
+                    .andExpect {
+                        status { isOk() }
+                        content {
+                            contentType(MediaType.APPLICATION_JSON)
+                            json(objectMapper.writeValueAsString(updatedBank))
+                        }
+                    }
+            mockMvc.get("$baseUrl/${updatedBank.accountNumber}")
+                    .andExpect { content { json(objectMapper.writeValueAsString(updatedBank)) } }
+        }
+    }
+
+    @Test
+    fun `should return NOT FOUND if no bank exists for the given account number`() {
+        // given
+        val invalidBank = Bank("6765", 3.90, 3)
+
+        // when
+        val performPatch = mockMvc.patch(baseUrl) {
+            contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(invalidBank)
+        }
+
+        // then
+        performPatch
+                .andDo { print() }
+                .andExpect {
+                    status { isNotFound() }
+                }
+    }
 }

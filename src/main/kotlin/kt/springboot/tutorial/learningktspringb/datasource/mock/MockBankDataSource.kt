@@ -3,7 +3,7 @@ package kt.springboot.tutorial.learningktspringb.datasource.mock
 import kt.springboot.tutorial.learningktspringb.datasource.BankDataSource
 import kt.springboot.tutorial.learningktspringb.model.Bank
 import org.springframework.stereotype.Repository
-import java.util.NoSuchElementException
+import kotlin.NoSuchElementException
 
 @Repository
 class MockBankDataSource : BankDataSource {
@@ -28,6 +28,15 @@ class MockBankDataSource : BankDataSource {
             throw IllegalArgumentException("Bank with this account number already exists: ${bank.accountNumber}")
         }
         banks.add(bank)
+        return bank
+    }
+
+    override fun updateBank(bank: Bank): Bank {
+        val currentBank = banks.firstOrNull { it.accountNumber == bank.accountNumber }
+                ?: throw NoSuchElementException("Could not find a bank account with account number: ${bank.accountNumber}")
+        banks.remove(currentBank)
+        banks.add(bank)
+
         return bank
     }
 
