@@ -1,5 +1,6 @@
 package kt.springboot.tutorial.learningktspringb.controller
 
+import io.mockk.InternalPlatformDsl.toStr
 import org.junit.jupiter.api.Assertions.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -26,5 +27,21 @@ internal class BankControllerTest {
                     content { contentType(MediaType.APPLICATION_JSON) }
                     jsonPath("$[0].accountNumber") {value("1234")}
                 }
+    }
+    
+    @Test
+    fun `should a bank with given account number`() {
+        // given
+        val accountNumber = 1234
+        // when / then
+        mockMvc.get("/api/banks/$accountNumber")
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+                    content { contentType(MediaType.APPLICATION_JSON) }
+                    jsonPath("$.trust") {value("0.1")}
+                    jsonPath("$.transactionFee") {value("1")}
+                }
+    
     }
 }
