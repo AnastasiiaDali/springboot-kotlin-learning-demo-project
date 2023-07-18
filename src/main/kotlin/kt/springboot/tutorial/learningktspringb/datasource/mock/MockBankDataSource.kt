@@ -3,6 +3,7 @@ package kt.springboot.tutorial.learningktspringb.datasource.mock
 import kt.springboot.tutorial.learningktspringb.datasource.BankDataSource
 import kt.springboot.tutorial.learningktspringb.model.Bank
 import org.springframework.stereotype.Repository
+import java.util.NoSuchElementException
 
 @Repository
 class MockBankDataSource : BankDataSource {
@@ -18,6 +19,7 @@ class MockBankDataSource : BankDataSource {
     }
 
     override fun retrieveBank(accountNumber: String): Bank {
-        return banks.first { it.accountNumber == accountNumber }
+        return banks.firstOrNull() { it.accountNumber == accountNumber }
+                ?: throw NoSuchElementException("Could not find a bank account with account number: $accountNumber")
     }
 }
