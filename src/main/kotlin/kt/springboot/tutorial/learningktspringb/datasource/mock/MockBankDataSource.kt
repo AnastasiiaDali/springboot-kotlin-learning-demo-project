@@ -8,7 +8,7 @@ import java.util.NoSuchElementException
 @Repository
 class MockBankDataSource : BankDataSource {
 
-    val banks = listOf(
+    val banks = mutableListOf(
             Bank("1234", 0.1, 1),
             Bank("2345", 17.1, 2),
             Bank("7689", 15.1, 5),
@@ -22,4 +22,14 @@ class MockBankDataSource : BankDataSource {
         return banks.firstOrNull() { it.accountNumber == accountNumber }
                 ?: throw NoSuchElementException("Could not find a bank account with account number: $accountNumber")
     }
+
+    override fun createBank(bank: Bank): Bank {
+        if (banks.any {it.accountNumber == bank.accountNumber}) {
+            throw IllegalArgumentException("Bank with this account number already exists: ${bank.accountNumber}")
+        }
+        banks.add(bank)
+        return bank
+    }
+
+
 }
