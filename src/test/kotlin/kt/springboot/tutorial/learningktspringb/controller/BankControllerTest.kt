@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.springframework.http.MediaType
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.servlet.*
 
 @SpringBootTest
@@ -125,6 +126,7 @@ internal class BankControllerTest @Autowired constructor (
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class PatchExistingBank {
         @Test
+        @DirtiesContext
         fun `should update existing bank`() {
             // given
             val updatedBank = Bank("2345", 3.90, 3)
@@ -174,6 +176,7 @@ internal class BankControllerTest @Autowired constructor (
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class DeleteExistingBank {
         @Test
+        @DirtiesContext
         fun `should delete the bank with provided account number`() {
             // given
             val accountNumber = 1234
@@ -189,6 +192,7 @@ internal class BankControllerTest @Autowired constructor (
         }
 
         @Test
+        @DirtiesContext
         fun `should return NOT FOUND if no bank exists for the given account number`() {
             // given
             val invalidAccountNumber = "does_not_exists"
