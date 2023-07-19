@@ -36,7 +36,7 @@ internal class BankControllerTest @Autowired constructor (
                     .andExpect {
                         status { isOk() }
                         content { contentType(MediaType.APPLICATION_JSON) }
-                        jsonPath("$[2].accountNumber") {value("7689")}
+                        jsonPath("$[2].account_number") {value("7689")}
                     }
         }
     }
@@ -56,7 +56,7 @@ internal class BankControllerTest @Autowired constructor (
                         status { isOk() }
                         content { contentType(MediaType.APPLICATION_JSON) }
                         jsonPath("$.trust") {value("17.1")}
-                        jsonPath("$.transactionFee") {value("2")}
+                        jsonPath("$.default_transaction_fee") {value("2")}
                     }
         }
 
@@ -95,9 +95,9 @@ internal class BankControllerTest @Autowired constructor (
                     .andExpect {
                         status { isCreated() }
                         content { contentType(MediaType.APPLICATION_JSON) }
-                        jsonPath("$.accountNumber") {value("0987")}
+                        jsonPath("$.account_number") {value("0987")}
                         jsonPath("$.trust") {value("1.16")}
-                        jsonPath("$.transactionFee") {value("4")}
+                        jsonPath("$.default_transaction_fee") {value("4")}
                     }
                     }
 

@@ -5,7 +5,7 @@ import kt.springboot.tutorial.learningktspringb.model.Bank
 import org.springframework.stereotype.Repository
 import kotlin.NoSuchElementException
 
-@Repository
+@Repository("mockData")
 class MockBankDataSource : BankDataSource {
 
     val banks = mutableListOf(
